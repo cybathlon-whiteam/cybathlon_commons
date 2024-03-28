@@ -62,6 +62,28 @@ BCICommand to_bcicommand(const rosneuro_msgs::NeuroEvent& msg) {
 
 }
 
+Artifact to_artifact(const rosneuro_msgs::NeuroEvent& msg) {
+	
+	Artifact art;
+
+	switch(msg.event) {
+		case static_cast<int>(Artifact::Ocular):
+			art = Artifact::Ocular;
+			break;
+		case static_cast<int>(Artifact::EndOcular):
+			art = Artifact::EndOcular;
+			break;
+		case static_cast<int>(Artifact::None):
+		default:
+			art = Artifact::None;
+			break;
+	}
+
+
+	return art;
+
+}
+
 
 std::string to_string(const GameTask& task) {
 
@@ -131,6 +153,28 @@ std::string to_string(const BCICommand& command) {
 			label = "HardRight";
 			break;
 		case BCICommand::None:
+			label = "None";
+			break;
+		default:
+			label = "Unknown";
+			break;
+	}
+
+	return label;
+}
+
+std::string to_string(const Artifact& artifact) {
+
+	std::string label;
+
+	switch(artifact) {
+		case Artifact::Ocular:
+			label = "Ocular";
+			break;
+		case Artifact::EndOcular:
+			label = "EndOcular";
+			break;
+		case Artifact::None:
 			label = "None";
 			break;
 		default:
