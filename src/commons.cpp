@@ -2,107 +2,125 @@
 
 namespace cybathlon {
 
-GameTask to_gametask(const rosneuro_msgs::NeuroEvent& msg) {
+GameState to_gamestate(const rosneuro_msgs::NeuroEvent& msg) {
 	
-	GameTask task;
+	GameState state;
 
 	switch(msg.event) {
-		case static_cast<int>(GameTask::Wheelchair):
-			task = GameTask::Wheelchair;
+		case static_cast<int>(GameState::Wheelchair):
+			state = GameState::Wheelchair;
 			break;
-		case static_cast<int>(GameTask::RoboticArm):
-			task = GameTask::RoboticArm;
+		case static_cast<int>(GameState::RoboticArm):
+			state = GameState::RoboticArm;
 			break;
-		case static_cast<int>(GameTask::ScreenCursor):
-			task = GameTask::ScreenCursor;
+		case static_cast<int>(GameState::ScreenCursor):
+			state = GameState::ScreenCursor;
 			break;
-		case static_cast<int>(GameTask::End):
-			task = GameTask::End;
-			break;
-		case static_cast<int>(GameTask::Undefined):
-			task = GameTask::Undefined;
+		case static_cast<int>(GameState::End):
+			state = GameState::End;
 			break;
 		default:
-			task = GameTask::Undefined;
+			state = GameState::Undefined;
+			break;
+	}
+
+	return state;
+}
+
+FeedbackState to_feedbackstate(const rosneuro_msgs::NeuroEvent& msg) {
+	
+	FeedbackState state;
+	
+	switch(msg.event) {
+		case static_cast<int>(FeedbackState::OverHardLeft):
+			state = FeedbackState::OverHardLeft;
+			break;
+			case static_cast<int>(FeedbackState::OverSoftLeft):
+			state = FeedbackState::OverSoftLeft;
+			break;
+		case static_cast<int>(FeedbackState::OverSoftRight):
+			state = FeedbackState::OverSoftRight;
+			break;
+		case static_cast<int>(FeedbackState::OverHardRight):
+			state = FeedbackState::OverHardRight;
+			break;
+		case static_cast<int>(FeedbackState::None):
+			state = FeedbackState::None;
+			break;
+		default:
+			state = FeedbackState::Undefined;
 			break;
 	}
 
 
-	return task;
+	return state;
 
 }
 
-BCICommand to_bcicommand(const rosneuro_msgs::NeuroEvent& msg) {
+ArtifactState to_artifactstate(const rosneuro_msgs::NeuroEvent& msg) {
 	
-	BCICommand cmd;
+	ArtifactState state;
 
 	switch(msg.event) {
-		case static_cast<int>(BCICommand::HardLeft):
-			cmd = BCICommand::HardLeft;
+		case static_cast<int>(ArtifactState::Ocular):
+			state = ArtifactState::Ocular;
 			break;
-			case static_cast<int>(BCICommand::SoftLeft):
-			cmd = BCICommand::SoftLeft;
+		case static_cast<int>(ArtifactState::EndOcular):
+			state = ArtifactState::EndOcular;
 			break;
-		case static_cast<int>(BCICommand::SoftRight):
-			cmd = BCICommand::SoftRight;
-			break;
-		case static_cast<int>(BCICommand::HardRight):
-			cmd = BCICommand::HardRight;
-			break;
-		case static_cast<int>(BCICommand::None):
-			cmd = BCICommand::None;
+		case static_cast<int>(ArtifactState::None):
+			state = ArtifactState::None;
 			break;
 		default:
-			cmd = BCICommand::None;
+			state = ArtifactState::Undefined;
 			break;
 	}
 
 
-	return cmd;
+	return state;
 
 }
 
-Artifact to_artifact(const rosneuro_msgs::NeuroEvent& msg) {
+ControllerState to_controllerstate(const rosneuro_msgs::NeuroEvent& msg) {
 	
-	Artifact art;
+	ControllerState state;
 
 	switch(msg.event) {
-		case static_cast<int>(Artifact::Ocular):
-			art = Artifact::Ocular;
+		case static_cast<int>(ControllerState::Activated):
+			state = ControllerState::Activated;
 			break;
-		case static_cast<int>(Artifact::EndOcular):
-			art = Artifact::EndOcular;
+		case static_cast<int>(ControllerState::Deactivated):
+			state = ControllerState::Deactivated;
 			break;
-		case static_cast<int>(Artifact::None):
 		default:
-			art = Artifact::None;
+			state = ControllerState::Undefined;
 			break;
 	}
 
 
-	return art;
+	return state;
 
 }
 
 
-std::string to_string(const GameTask& task) {
+std::string to_string(const GameState& state) {
 
 	std::string label;
 
-	switch(task) {
-		case GameTask::Wheelchair:
+	switch(state) {
+		case GameState::Wheelchair:
 			label = "Wheelchair";
 			break;
-		case GameTask::RoboticArm:
+		case GameState::RoboticArm:
 			label = "RoboticArm";
 			break;
-		case GameTask::ScreenCursor:
+		case GameState::ScreenCursor:
 			label = "ScreenCursor";
 			break;
-		case GameTask::End:
+		case GameState::End:
 			label = "End";
 			break;
-		case GameTask::Undefined:
+		case GameState::Undefined:
 			label = "Undefined";
 			break;
 		default:
@@ -135,24 +153,24 @@ std::string to_string(const GameCommand& command) {
 	return label;
 }
 
-std::string to_string(const BCICommand& command) {
+std::string to_string(const FeedbackState& state) {
 
 	std::string label;
 
-	switch(command) {
-		case BCICommand::SoftLeft:
-			label = "SoftLeft";
+	switch(state) {
+		case FeedbackState::OverSoftLeft:
+			label = "OverSoftLeft";
 			break;
-		case BCICommand::SoftRight:
-			label = "SoftRight";
+		case FeedbackState::OverSoftRight:
+			label = "OverSoftRight";
 			break;
-		case BCICommand::HardLeft:
-			label = "HardLeft";
+		case FeedbackState::OverHardLeft:
+			label = "OverHardLeft";
 			break;
-		case BCICommand::HardRight:
-			label = "HardRight";
+		case FeedbackState::OverHardRight:
+			label = "OverHardRight";
 			break;
-		case BCICommand::None:
+		case FeedbackState::None:
 			label = "None";
 			break;
 		default:
@@ -163,19 +181,41 @@ std::string to_string(const BCICommand& command) {
 	return label;
 }
 
-std::string to_string(const Artifact& artifact) {
+std::string to_string(const ArtifactState& state) {
 
 	std::string label;
 
-	switch(artifact) {
-		case Artifact::Ocular:
+	switch(state) {
+		case ArtifactState::Ocular:
 			label = "Ocular";
 			break;
-		case Artifact::EndOcular:
+		case ArtifactState::EndOcular:
 			label = "EndOcular";
 			break;
-		case Artifact::None:
+		case ArtifactState::None:
 			label = "None";
+			break;
+		default:
+			label = "Unknown";
+			break;
+	}
+
+	return label;
+}
+
+std::string to_string(const ControllerState& state) {
+
+	std::string label;
+
+	switch(state) {
+		case ControllerState::Undefined:
+			label = "Undefined";
+			break;
+		case ControllerState::Activated:
+			label = "Activated";
+			break;
+			case ControllerState::Deactivated:
+			label = "Deactivated";
 			break;
 		default:
 			label = "Unknown";
